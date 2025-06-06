@@ -17,7 +17,6 @@ interface ChatInterfaceProps {
 const ChatInterface = ({ messages, setMessages }: ChatInterfaceProps) => {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [showSummary, setShowSummary] = useState(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -50,7 +49,6 @@ const ChatInterface = ({ messages, setMessages }: ChatInterfaceProps) => {
     const summary = assistantService.generateWeeklySummary();
     const summaryMessage = assistantService.addMessage(summary, 'assistant');
     setMessages(prev => [...prev, summaryMessage]);
-    setShowSummary(true);
   };
 
   return (

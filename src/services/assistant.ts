@@ -4,6 +4,12 @@ interface Message {
   timestamp: Date;
 }
 
+interface SavedMessage {
+  text: string;
+  sender: 'user' | 'assistant';
+  timestamp: string;
+}
+
 class AssistantService {
   private messages: Message[] = [];
 
@@ -16,7 +22,8 @@ class AssistantService {
   private loadMessages() {
     const saved = localStorage.getItem('chat_messages');
     if (saved) {
-      this.messages = JSON.parse(saved).map((msg: any) => ({
+      const parsedMessages: SavedMessage[] = JSON.parse(saved);
+      this.messages = parsedMessages.map(msg => ({
         ...msg,
         timestamp: new Date(msg.timestamp)
       }));

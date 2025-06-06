@@ -9,6 +9,13 @@ interface Note {
   emotion?: string;
 }
 
+interface SavedNote {
+  id: string;
+  text: string;
+  timestamp: string;
+  emotion?: string;
+}
+
 const Notes = () => {
   const [notes, setNotes] = useState<Note[]>([]);
   const [newNote, setNewNote] = useState('');
@@ -21,7 +28,8 @@ const Notes = () => {
     // Cargar notas guardadas
     const savedNotes = localStorage.getItem('emotional_notes');
     if (savedNotes) {
-      setNotes(JSON.parse(savedNotes).map((note: any) => ({
+      const parsedNotes: SavedNote[] = JSON.parse(savedNotes);
+      setNotes(parsedNotes.map(note => ({
         ...note,
         timestamp: new Date(note.timestamp)
       })));
