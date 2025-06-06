@@ -15,18 +15,22 @@ class AssistantService {
 
   // Almacenar mensajes en localStorage
   private saveMessages() {
-    localStorage.setItem('chat_messages', JSON.stringify(this.messages));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('chat_messages', JSON.stringify(this.messages));
+    }
   }
 
   // Cargar mensajes desde localStorage
   private loadMessages() {
-    const saved = localStorage.getItem('chat_messages');
-    if (saved) {
-      const parsedMessages: SavedMessage[] = JSON.parse(saved);
-      this.messages = parsedMessages.map(msg => ({
-        ...msg,
-        timestamp: new Date(msg.timestamp)
-      }));
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('chat_messages');
+      if (saved) {
+        const parsedMessages: SavedMessage[] = JSON.parse(saved);
+        this.messages = parsedMessages.map(msg => ({
+          ...msg,
+          timestamp: new Date(msg.timestamp)
+        }));
+      }
     }
   }
 

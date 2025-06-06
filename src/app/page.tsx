@@ -14,12 +14,29 @@ interface Message {
 
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     // Cargar mensajes guardados al iniciar
     const savedMessages = assistantService.getMessages();
     setMessages(savedMessages);
   }, []);
+
+  if (!isMounted) {
+    return (
+      <main className="min-h-screen bg-gradient-to-b from-blue-50 to-white p-4">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="text-3xl font-bold text-center text-blue-800 mb-8">
+            Tu Asistente Emocional
+          </h1>
+          <div className="flex justify-center items-center h-[600px]">
+            <div className="animate-pulse text-gray-500">Cargando...</div>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-50 to-white p-4">

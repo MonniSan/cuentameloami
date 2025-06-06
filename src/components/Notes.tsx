@@ -21,10 +21,12 @@ const Notes = () => {
   const [newNote, setNewNote] = useState('');
   const [selectedEmotion, setSelectedEmotion] = useState<string>('');
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   const emotions = ['😊 Feliz', '😢 Triste', '😡 Enojado', '😰 Ansioso', '😌 Tranquilo'];
 
   useEffect(() => {
+    setIsMounted(true);
     // Cargar notas guardadas
     const savedNotes = localStorage.getItem('emotional_notes');
     if (savedNotes) {
@@ -37,7 +39,9 @@ const Notes = () => {
   }, []);
 
   const saveNotes = (updatedNotes: Note[]) => {
-    localStorage.setItem('emotional_notes', JSON.stringify(updatedNotes));
+    if (isMounted) {
+      localStorage.setItem('emotional_notes', JSON.stringify(updatedNotes));
+    }
   };
 
   const handleAddNote = () => {
@@ -62,6 +66,10 @@ const Notes = () => {
     setNotes(updatedNotes);
     saveNotes(updatedNotes);
   };
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-4">
